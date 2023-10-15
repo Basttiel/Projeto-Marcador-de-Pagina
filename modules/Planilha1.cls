@@ -11,7 +11,7 @@ Private Sub Worksheet_Activate()
     
     Range("A1").Select
     
-    If formCadastro.Visible = False And formLogin.Visible = False Then
+    If formCadastro.Visible = False And formLogin.Visible = False And formUser.Visible = False Then
         
         On Error Resume Next
         formLogin.Show
@@ -20,3 +20,7 @@ Private Sub Worksheet_Activate()
     
 End Sub
 
+Private Sub Worksheet_Change(ByVal Target As Range)
+
+    
+End Sub

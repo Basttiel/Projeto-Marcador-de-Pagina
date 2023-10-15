@@ -15,7 +15,7 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
     
-    Dim PlanCad, PlanUsers, PlanInicio, NovaPlanilha As Worksheet
+    Dim PlanCad, PlanUsers, PlanInicio As Worksheet
     Dim fim As Long
 
 Private Sub btnCadastrar_Cad_Click()
@@ -50,14 +50,11 @@ Private Sub btnCadastrar_Cad_Click()
                     PlanCad.Range("C" & fim).Value = Me.txtPerg_Cad.Value
                     PlanCad.Range("D" & fim).Value = Me.txtResp_Cad.Value
                     
-                    'Set NovaPlanilha = ThisWorkbook.Sheets.Add
-                    'NovaPlanilha.Name = Me.txtUser_Cad.Value
                     PlanInicio.Activate
                     Application.ScreenUpdating = True
                     ActiveWorkbook.RefreshAll
                     Unload Me
                     MsgBox "Usuário cadastrado com sucesso!", vbOKOnly + vbInformation, "Aviso"
-                    'formLogin.Show
     End If
 
 End Sub

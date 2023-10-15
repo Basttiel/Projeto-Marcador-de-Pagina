@@ -15,7 +15,8 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 Dim PlanUsers, PlanInicio As Worksheet
-Dim temp1, temp2, conf
+Dim temp1, temp2, conf, user
+Dim senha As String
 
 Private Sub btnCad_Log_Click()
     
@@ -52,6 +53,7 @@ Private Sub btnEntrar_Log_Click()
         If temp2 = temp1 Then
         
             conf = 1
+            user = ActiveCell.Value
         ElseIf temp2 = "" Then
     
             conf = 2
@@ -59,11 +61,19 @@ Private Sub btnEntrar_Log_Click()
     Loop
     
     If conf = 1 Then
+        senha = ActiveCell.Offset(0, 1).Value
         
-        If ActiveCell.Offset(0, 1).Value = Me.txtSenha_Log Then
+        If senha = Me.txtSenha_Log Then
         
-            MsgBox "Login realizado com sucesso!", vbOKOnly + vbInformation, "Aviso"
-            'abrir futuro form
+            'MsgBox "Login realizado com sucesso!", vbOKOnly + vbInformation, "Aviso"
+            PlanInicio.Activate
+            PlanInicio.Range("a1").Value = user
+            ActiveWorkbook.RefreshAll
+            Unload formLogin
+            formUser.Show
+            Unload formUser
+            formLogin.Show
+            Exit Sub
             conf = 3
         Else
         
