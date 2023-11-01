@@ -66,27 +66,42 @@ Public Sub AttLista()
     PlanCad.Activate
     Range("H2").Select
     temp = 0
+    For i = formUser.listQuad.ListCount - 1 To 0 Step -1
+        formUser.listQuad.RemoveItem i
+    Next i
+    'formUser.listQuad.List = Array()
     
     Do While ActiveCell.Value <> ""
     
     If ActiveCell.Value = formUser.lblUser.Caption Then
     
-        With formUser.listQuad
-            
-            .AddItem
-            .List(temp, 0) = PlanCad.Cells(lin, 2)
-            .List(temp, 1) = PlanCad.Cells(lin, 3)
-            .List(temp, 2) = PlanCad.Cells(lin, 4)
-            .List(temp, 3) = PlanCad.Cells(lin, 5)
-            .List(temp, 4) = PlanCad.Cells(lin, 6)
-            .List(temp, 5) = PlanCad.Cells(lin, 7)
-            temp = temp + 1
-            
-        End With
+        If formUser.txtPesq = "" Or InStr(1, ActiveCell.Offset(0, -6).Value, formUser.txtPesq.Value, vbTextCompare) > 0 Then
+        
+            With formUser.listQuad
+                
+                .AddItem
+                .List(temp, 0) = PlanCad.Cells(lin, 1)
+                .List(temp, 1) = PlanCad.Cells(lin, 2)
+                .List(temp, 2) = PlanCad.Cells(lin, 3)
+                .List(temp, 3) = PlanCad.Cells(lin, 4)
+                .List(temp, 4) = PlanCad.Cells(lin, 5)
+                .List(temp, 5) = PlanCad.Cells(lin, 6)
+                .List(temp, 6) = PlanCad.Cells(lin, 7)
+                temp = temp + 1
+                
+            End With
+        
+        End If
     
     End If
     
     lin = lin + 1
     ActiveCell.Offset(1, 0).Select
     Loop
+End Sub
+
+Public Sub MostrarCom()
+
+    Set PlanCad = Sheets("Quadrinhos Cadastrados")
+
 End Sub

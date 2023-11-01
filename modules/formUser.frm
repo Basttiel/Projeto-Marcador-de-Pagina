@@ -18,7 +18,7 @@ Option Explicit
     Dim fim As Long
     Dim id As Integer
     Dim tabela As ListObject
-    Dim user, lin
+    Dim user, lin, resp
 
 Private Sub btnCad_Click()
     Set PlanCad = Sheets("Quadrinhos Cadastrados")
@@ -65,7 +65,74 @@ Private Sub btnCad_Click()
     Me.btnopLendo = 0
     Me.btnopPlan = 0
     
-    MsgBox "Quadrinho cadastrado com sucesso!", vbOKOnly + vbInformation, "Aviso"
+    MsgBox "Cadastrado com sucesso!", vbOKOnly + vbInformation, "Aviso"
+
+End Sub
+
+Private Sub btnComen_Click()
+
+    Set PlanCad = Sheets("Quadrinhos Cadastrados")
+
+    If Me.listQuad.ListIndex < 0 Then
+        MsgBox "Selecione a opção que deseja ver o comentário!", vbInformation, "Aviso"
+        
+    Else
+        PlanCad.Activate
+        Range("A1").Select
+        
+        Do While ActiveCell.Value <> CInt(Me.listQuad.List(Me.listQuad.ListIndex, 0)) Or ActiveCell.Value = Null
+            ActiveCell.Offset(1, 0).Select
+            
+        Loop
+        
+        If ActiveCell.Value = "" Then
+            MsgBox "Não encontrado!", vbCritical
+            
+        Else
+            MsgBox ActiveCell.Offset(0, 6).Value, , "Comentário"
+        
+        End If
+        
+    End If
+
+End Sub
+
+Private Sub btnDel_Click()
+
+    Set PlanCad = Sheets("Quadrinhos Cadastrados")
+
+    If Me.listQuad.ListIndex < 0 Then
+        MsgBox "Selecione na lista o que deseja excluir!", vbInformation, "Aviso"
+    
+    Else
+        resp = MsgBox("Tem certeza que deseja excluir este dado?", vbYesNo + vbExclamation, "ALERTA")
+            
+        If resp = vbYes Then
+            PlanCad.Activate
+            Range("A1").Select
+        
+            Do While ActiveCell.Value <> CInt(Me.listQuad.List(Me.listQuad.ListIndex, 0)) Or ActiveCell.Value = Null
+            ActiveCell.Offset(1, 0).Select
+            
+            Loop
+                
+            If ActiveCell.Value = "" Then
+                MsgBox "Não encontrado!", vbCritical
+            
+            Else
+                Rows(ActiveCell.Row).Delete
+                Application.Run "Módulo1.AttLista"
+                MsgBox "Deletado com sucesso!", vbInformation, "Aviso"
+                    
+            End If
+        End If
+    End If
+
+End Sub
+
+Private Sub btnPesq_Click()
+
+    Application.Run "Módulo1.AttLista"
 
 End Sub
 
