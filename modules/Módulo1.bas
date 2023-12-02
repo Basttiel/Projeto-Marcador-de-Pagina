@@ -3,7 +3,7 @@ Option Explicit
 
 Dim PlanUsers, PlanInicio, PlanCad As Worksheet
 Dim temp1, temp2 As String
-Dim frm, lin, i, temp
+Dim frm, lin, i, temp, tbl, rng
 
 Public Sub ValidarUser()
     Application.ScreenUpdating = False
@@ -61,8 +61,7 @@ Public Sub AttLista()
         
        'lin = lin + 1
     'Loop
-    
-    
+    Application.Run "Módulo1.Ordenar"
     PlanCad.Activate
     Range("H2").Select
     temp = 0
@@ -98,10 +97,28 @@ Public Sub AttLista()
     lin = lin + 1
     ActiveCell.Offset(1, 0).Select
     Loop
+    
 End Sub
 
-Public Sub MostrarCom()
+'Public Sub MostrarCom()
 
-    Set PlanCad = Sheets("Quadrinhos Cadastrados")
+    'Set PlanCad = Sheets("Quadrinhos Cadastrados")
 
+'End Sub
+
+Sub Ordenar()
+
+    ActiveWorkbook.Worksheets("Quadrinhos Cadastrados").ListObjects("tabQuad").Sort _
+        .SortFields.Clear
+    ActiveWorkbook.Worksheets("Quadrinhos Cadastrados").ListObjects("tabQuad").Sort _
+        .SortFields.Add2 Key:=Range("tabQuad[[#All],[nome]]"), SortOn:= _
+        xlSortOnValues, Order:=xlAscending, DataOption:=xlSortTextAsNumbers
+    With ActiveWorkbook.Worksheets("Quadrinhos Cadastrados").ListObjects("tabQuad") _
+        .Sort
+        .Header = xlYes
+        .MatchCase = False
+        .Orientation = xlTopToBottom
+        .SortMethod = xlPinYin
+        .Apply
+    End With
 End Sub

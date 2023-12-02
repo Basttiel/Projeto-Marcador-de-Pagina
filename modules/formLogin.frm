@@ -15,7 +15,7 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 Dim PlanUsers, PlanInicio As Worksheet
-Dim temp1, temp2, conf, user
+Dim temp1, temp2, conf, user, inpbox, resp
 Dim senha As String
 
 Private Sub btnCad_Log_Click()
@@ -100,6 +100,51 @@ Private Sub btnEntrar_Log_Click()
     Application.ScreenUpdating = True
 End Sub
 
+Private Sub btnEsqSenha_Log_Click()
+
+    Set PlanUsers = Sheets("Usuários Cadastrados")
+    Set PlanInicio = Sheets("Inicial")
+    conf = 0
+      
+    inpbox = UCase(InputBox("Digite o seu nome de usuário!", "Esqueci minha senha"))
+    
+    If inpbox <> "" Then
+        PlanUsers.Activate
+        Range("A1").Select
+        
+        Do While conf = 0
+            
+            ActiveCell.Offset(1, 0).Select
+            temp2 = UCase(ActiveCell.Value)
+           
+            If temp2 = inpbox Then
+            
+                conf = 1
+                user = ActiveCell.Value
+            ElseIf temp2 = "" Then
+        
+                conf = 2
+            End If
+        Loop
+    End If
+    
+    If conf = 1 Then
+        resp = InputBox(ActiveCell.Offset(0, 2).Value, "Pergunta de Segurança")
+    
+        If UCase(resp) = UCase(ActiveCell.Offset(0, 3).Value) Then
+            MsgBox "Sua senha é: " & ActiveCell.Offset(0, 1).Value, vbOKOnly, "Senha"
+            
+        Else
+            MsgBox "Resposta Incorreta!"
+            
+        End If
+    
+    Else
+        MsgBox "Usuário não encontrado!", vbExclamation
+        
+    End If
+End Sub
+
 Private Sub btnMostrarSenha_Log_Click()
     
     If Me.btnMostrarSenha_Log.Value Then
@@ -113,10 +158,10 @@ Private Sub btnMostrarSenha_Log_Click()
 End Sub
 
 Private Sub UserForm_QueryClose(Cancel As Integer, CloseMode As Integer)
-
+    
     If CloseMode = vbFormControlMenu Then
     
-        'Cancel = True
+        Cancel = True
     End If
 
 End Sub

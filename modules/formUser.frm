@@ -18,7 +18,53 @@ Option Explicit
     Dim fim As Long
     Dim id As Integer
     Dim tabela As ListObject
-    Dim user, lin, resp
+    Dim user, lin, resp, temp
+
+Private Sub btnAtt_Click()
+    
+    Set PlanCad = Sheets("Quadrinhos Cadastrados")
+
+    If Me.listQuad.ListIndex < 0 Then
+        MsgBox "Selecione na lista o que deseja editar!", vbInformation, "Aviso"
+    
+    Else
+        
+        PlanCad.Activate
+        Range("A1").Select
+        
+        Do While ActiveCell.Value <> CInt(Me.listQuad.List(Me.listQuad.ListIndex, 0)) Or ActiveCell.Value = Null
+        ActiveCell.Offset(1, 0).Select
+            
+        Loop
+                
+        If ActiveCell.Value = "" Then
+                MsgBox "Não encontrado!", vbCritical
+            
+        Else
+            FormAtt.lblUser.Caption = Me.lblUser.Caption
+            FormAtt.lblID.Caption = CInt(Me.listQuad.List(Me.listQuad.ListIndex, 0))
+            FormAtt.txtNome.Value = ActiveCell.Offset(0, 1).Value
+            FormAtt.txtMarc.Value = ActiveCell.Offset(0, 2).Value
+            FormAtt.txtFonte.Value = ActiveCell.Offset(0, 3).Value
+            If ActiveCell.Offset(0, 4).Value = "Lendo" Then
+                FormAtt.btnopLendo.Value = True
+            
+            ElseIf ActiveCell.Offset(0, 4).Value = "Completo" Then
+                FormAtt.btnopComp.Value = True
+            
+            Else
+                FormAtt.btnopPlan.Value = True
+            
+            End If
+            FormAtt.txtNota = ActiveCell.Offset(0, 5).Value
+            FormAtt.txtComen = ActiveCell.Offset(0, 6).Value
+            FormAtt.Show
+                    
+        End If
+               
+    End If
+    
+End Sub
 
 Private Sub btnCad_Click()
     Set PlanCad = Sheets("Quadrinhos Cadastrados")
